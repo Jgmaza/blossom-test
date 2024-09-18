@@ -29,6 +29,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Deploy on Vercel
 
 You can view the deploying of this server in the link:
-https://blossom-test-79xbvmr2a-jose-mazas-projects.vercel.app/characters
-
+[https://blossom-test-79xbvmr2a-jose-mazas-projects.vercel.app/characters
+](https://blossom-test-abbd82rcr-jose-mazas-projects.vercel.app/characters)
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
