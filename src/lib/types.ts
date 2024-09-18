@@ -11,15 +11,15 @@ export interface ICharacter {
   id: string;
   name: string;
   species: string;
-  gender: IGenders;
-  status: IStatus;
+  gender?: IGenders;
+  status?: IStatus;
   image: string;
 }
-
 export interface ICharacterFilter {
   name?: string;
-  speciesId?: string;
+  status?: IStatus;
+  species?: string;
+  gender?: IGenders;
   favorites?: boolean;
   others?: boolean;
-  gender?: IGenders;
 }

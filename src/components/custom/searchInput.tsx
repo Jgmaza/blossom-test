@@ -1,9 +1,10 @@
 import { Popover } from "../ui/popover";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { Input } from "../ui/input";
 import { PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { ICharacterFilter } from "@/lib/types";
+import { PopoverClose } from "@radix-ui/react-popover";
 
 interface SearchInputProps {
   setFilters: Dispatch<SetStateAction<ICharacterFilter>>;
@@ -12,7 +13,7 @@ interface SearchInputProps {
 }
 
 interface FilterButtonProps {
-  children: React.ReactNode;
+  children: ReactNode;
   parameter: string | string[];
   value: string | boolean | number | (string | boolean | number)[];
   setFilters: Dispatch<SetStateAction<ICharacterFilter>>;
@@ -24,7 +25,6 @@ const FilterButton = ({
   parameter,
   value,
   setFilters,
-  filters,
 }: FilterButtonProps) => {
   return (
     <Button
@@ -116,7 +116,7 @@ const SearchInput = ({ setFilters, species }: SearchInputProps) => {
               <p className="text-gray-500 text-sm">Specie</p>
               <div className="flex flex-row gap-2">
                 <FilterButton
-                  parameter="speciesId"
+                  parameter="species"
                   value=""
                   setFilters={setAuxFilters}
                   filters={auxFilters}
@@ -126,7 +126,7 @@ const SearchInput = ({ setFilters, species }: SearchInputProps) => {
                 {species?.map((specie, index) => (
                   <FilterButton
                     key={index}
-                    parameter="speciesId"
+                    parameter="species"
                     value={specie}
                     setFilters={setAuxFilters}
                     filters={auxFilters}
@@ -136,9 +136,11 @@ const SearchInput = ({ setFilters, species }: SearchInputProps) => {
                 ))}
               </div>
             </div>
-            <Button className="w-full" onClick={() => setFilters(auxFilters)}>
-              Filter
-            </Button>
+            <PopoverClose asChild>
+              <Button className="w-full" onClick={() => setFilters(auxFilters)}>
+                Filter
+              </Button>
+            </PopoverClose>
           </div>
         </PopoverContent>
       </Popover>
