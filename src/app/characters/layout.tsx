@@ -24,8 +24,6 @@ const CharacterLayout = ({
     },
   });
 
-  const [selectedCharacter, setSelectedCharacter] = useState<ICharacter>();
-
   return (
     <main className="h-screen bg-white">
       <div className="flex flex-row h-full">
@@ -37,11 +35,11 @@ const CharacterLayout = ({
               Rick and Morty List
             </h1>
           </div>
-{/*           <SearchInput
+          <SearchInput
             setFilters={setFilters}
             filters={filters}
-            species={data?.species}
-          /> */}
+            species={["Human", "Alien"]}
+          />
           {/* Character list */}
           {loading && (
             <div className="flex items-center justify-center h-full w-full">
@@ -58,15 +56,15 @@ const CharacterLayout = ({
               <div className="pl-5 pb-4 text-sm text-gray-500">
                 <p>
                   STARRED CHARACTERS (
-                  {
+                  {/* {
                     data?.characters?.results.filter(
                       (character: ICharacter) => character.isFavorite
                     ).length
-                  }
+                  } */}
                   )
                 </p>
               </div>
-              {data?.characters?.results
+              {/* {data?.characters?.results
                 ?.filter((character: ICharacter) => character.isFavorite)
                 .map((character: ICharacter) => (
                   <CustomCard
@@ -75,28 +73,21 @@ const CharacterLayout = ({
                     onClick={() => setSelectedCharacter(character)}
                     selectedCharacter={selectedCharacter}
                   />
-                ))}
+                ))} */}
               <div className="mt-8 pl-5 pb-4 text-sm text-gray-500">
                 <p>
                   CHARACTERS (
-                  {
+                  {/* {
                     data?.characters?.results.filter(
                       (character: ICharacter) => !character.isFavorite
                     ).length
-                  }
+                  } */}
                   )
                 </p>
               </div>
-              {data?.characters.results
-                ?.filter((character: ICharacter) => !character.isFavorite)
-                .map((character: ICharacter) => (
-                  <CustomCard
-                    key={character.id}
-                    character={character}
-                    onClick={() => setSelectedCharacter(character)}
-                    selectedCharacter={selectedCharacter}
-                  />
-                ))}
+              {data?.characters.results?.map((character: ICharacter) => (
+                <CustomCard key={character.id} character={character} />
+              ))}
             </div>
           )}
         </div>

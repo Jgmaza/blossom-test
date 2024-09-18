@@ -3,12 +3,12 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import { Input } from "../ui/input";
 import { PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
-import { ICharacterFilter, ISpecies } from "@/lib/types";
+import { ICharacterFilter } from "@/lib/types";
 
 interface SearchInputProps {
   setFilters: Dispatch<SetStateAction<ICharacterFilter>>;
   filters: ICharacterFilter;
-  species?: ISpecies[];
+  species?: string[];
 }
 
 interface FilterButtonProps {
@@ -123,15 +123,15 @@ const SearchInput = ({ setFilters, species }: SearchInputProps) => {
                 >
                   All
                 </FilterButton>
-                {species?.map((specie) => (
+                {species?.map((specie, index) => (
                   <FilterButton
-                    key={specie.id}
+                    key={index}
                     parameter="speciesId"
-                    value={specie.id}
+                    value={specie}
                     setFilters={setAuxFilters}
                     filters={auxFilters}
                   >
-                    {specie.name}
+                    {specie}
                   </FilterButton>
                 ))}
               </div>

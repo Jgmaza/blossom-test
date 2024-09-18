@@ -1,10 +1,4 @@
-export interface ISpecies {
-  name: string;
-  id: string;
-}
-
 export interface IComment {
-  id: string;
   comment: string;
   characterId: string;
 }
@@ -16,11 +10,10 @@ export type IStatus = "Alive" | "Dead" | "unknown";
 export interface ICharacter {
   id: string;
   name: string;
-  species: ISpecies;
+  species: string;
   gender: IGenders;
   status: IStatus;
   image: string;
-  isFavorite: boolean;
 }
 
 export interface ICharacterFilter {
