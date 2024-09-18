@@ -7,6 +7,8 @@ export const GET_CHARACTERS_AND_SPECIES = gql`
         id
         name
         species
+        gender
+        status
         image
       }
     }

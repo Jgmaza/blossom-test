@@ -40,6 +40,9 @@ const CharacterLayout = ({
   });
 
   const [starredCharacters, setStarredCharacters] = useState<ICharacter[]>([]);
+  const [filteredStarredCharacters, setFilteredStarredCharacters] = useState<
+    ICharacter[]
+  >([]);
 
   useEffect(() => {
     const starredCharacters = JSON.parse(
@@ -47,6 +50,25 @@ const CharacterLayout = ({
     );
     setStarredCharacters(starredCharacters);
   }, []);
+
+  useEffect(() => {
+    setFilteredStarredCharacters(
+      starredCharacters.filter((starred) => {
+        return (
+          (!filters.name ||
+            starred.name.toLowerCase().includes(filters.name.toLowerCase())) &&
+          (!filters.species ||
+            starred.species
+              .toLowerCase()
+              .includes(filters.species.toLowerCase())) &&
+          (!filters.gender ||
+            (starred.gender?.toLowerCase() ?? "").includes(
+              filters.gender.toLowerCase()
+            ))
+        );
+      })
+    );
+  }, [filters, starredCharacters]);
 
   const toggleStarred = (id: string) => {
     const starredCharacters = JSON.parse(
@@ -71,12 +93,15 @@ const CharacterLayout = ({
     <main className="h-screen bg-white">
       <div className="flex flex-row h-full">
         {/* SideBar */}
-        <div className="flex flex-col px-[16px] w-[500px] h-full">
+        <div className="flex flex-col px-[16px] w-[500px] h-full max:w-full">
           {/* Title and Search */}
           <div className="px-[8px] pt-8 mb-8">
             <h1
               className="text-2xl text-[#1F2937] font-bold cursor-pointer"
-              onClick={() => router.push("/characters")}
+              onClick={() => {
+                router.push("/characters");
+                setFilters({ favorites: true, others: true });
+              }}
             >
               Rick and Morty List
             </h1>
@@ -84,7 +109,7 @@ const CharacterLayout = ({
           <SearchInput
             setFilters={setFilters}
             filters={filters}
-            species={["Human", "Alien"]}
+            species={["Human", "Alien", "Humanoid", "Mythological Creature"]}
           />
 
           {/* Character list */}
@@ -104,10 +129,12 @@ const CharacterLayout = ({
               {filters.favorites && (
                 <>
                   <div className="pl-5 pb-4 text-sm text-gray-500">
-                    <p>STARRED CHARACTERS ({starredCharacters.length})</p>
+                    <p>
+                      STARRED CHARACTERS ({filteredStarredCharacters.length})
+                    </p>
                   </div>
 
-                  {starredCharacters.map((character: ICharacter) => (
+                  {filteredStarredCharacters.map((character: ICharacter) => (
                     <CustomCard
                       key={character.id}
                       character={character}
@@ -140,7 +167,7 @@ const CharacterLayout = ({
                     <p>
                       CHARACTERS (
                       {(data?.characters?.results?.length ?? 0) -
-                        starredCharacters.length}
+                        filteredStarredCharacters.length}
                       )
                     </p>
                   </div>

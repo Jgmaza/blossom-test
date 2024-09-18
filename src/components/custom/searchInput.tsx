@@ -14,7 +14,7 @@ interface SearchInputProps {
 
 interface FilterButtonProps {
   children: ReactNode;
-  parameter: string | string[];
+  parameter: keyof ICharacterFilter | (keyof ICharacterFilter)[];
   value: string | boolean | number | (string | boolean | number)[];
   setFilters: Dispatch<SetStateAction<ICharacterFilter>>;
   filters: ICharacterFilter;
@@ -25,10 +25,19 @@ const FilterButton = ({
   parameter,
   value,
   setFilters,
+  filters,
 }: FilterButtonProps) => {
   return (
     <Button
-      className=""
+      className={`rounded-[8px] hover:bg-purple-200 px-4 py-2 ${
+        typeof parameter === "string" && filters[parameter] === value
+          ? "bg-purple-200 text-purple-500"
+          : Array.isArray(parameter) &&
+            Array.isArray(value) &&
+            parameter.every((param, i) => filters[param] === value[i])
+          ? "bg-purple-200 text-purple-500"
+          : "text-gray-500"
+      }`}
       variant="outline"
       onClick={() => {
         if (typeof parameter === "string") {
@@ -50,8 +59,8 @@ const FilterButton = ({
   );
 };
 
-const SearchInput = ({ setFilters, species }: SearchInputProps) => {
-  const [auxFilters, setAuxFilters] = useState<ICharacterFilter>({});
+const SearchInput = ({ filters, setFilters, species }: SearchInputProps) => {
+  const [auxFilters, setAuxFilters] = useState<ICharacterFilter>(filters);
   return (
     <div className="flex items-center w-full px-4 py-[9px] bg-gray-100 rounded-md">
       <i className="fa-solid fa-search text-gray-500"></i>
@@ -80,10 +89,10 @@ const SearchInput = ({ setFilters, species }: SearchInputProps) => {
           align="end"
           alignOffset={-18}
         >
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-5">
             <div>
               <p className="text-gray-500 text-sm">Character</p>
-              <div className="flex flex-row gap-2">
+              <div className="flex flex-row gap-2 mt-">
                 <FilterButton
                   parameter={["favorites", "others"]}
                   value={[true, true]}
@@ -112,9 +121,9 @@ const SearchInput = ({ setFilters, species }: SearchInputProps) => {
               </div>
             </div>
 
-            <div>
+            <div className="overflow-x-auto w-full min-w-full">
               <p className="text-gray-500 text-sm">Specie</p>
-              <div className="flex flex-row gap-2">
+              <div className="flex flex-row gap-2 mt-">
                 <FilterButton
                   parameter="species"
                   value=""
@@ -136,8 +145,37 @@ const SearchInput = ({ setFilters, species }: SearchInputProps) => {
                 ))}
               </div>
             </div>
+            <div className="overflow-x-auto w-full min-w-full">
+              <p className="text-gray-500 text-sm ">Gender</p>
+              <div className="flex flex-row gap-2 mt-">
+                <FilterButton
+                  parameter="gender"
+                  value=""
+                  setFilters={setAuxFilters}
+                  filters={auxFilters}
+                >
+                  All
+                </FilterButton>
+                {["Male", "Female", "Genderless", "unknown"]?.map(
+                  (gender, index) => (
+                    <FilterButton
+                      key={index}
+                      parameter="gender"
+                      value={gender}
+                      setFilters={setAuxFilters}
+                      filters={auxFilters}
+                    >
+                      {gender}
+                    </FilterButton>
+                  )
+                )}
+              </div>
+            </div>
             <PopoverClose asChild>
-              <Button className="w-full" onClick={() => setFilters(auxFilters)}>
+              <Button
+                className="w-full text-gray-600 bg-purple-200 hover:bg-purple-800 hover:text-white"
+                onClick={() => setFilters(auxFilters)}
+              >
                 Filter
               </Button>
             </PopoverClose>
