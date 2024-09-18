@@ -41,7 +41,7 @@ const CharacterDetail = ({ params }: { params: { id: string } }) => {
 
   return (
     /* Selected Character */
-    <div className="flex flex-col h-full w-full px-24 pt-10">
+    <div className="flex flex-col h-full w-full px-24 pt-10 md-max:px-8 md-max:pt-16">
       <div className="h-fit w-fit relative">
         <Avatar className="h-20 w-20">
           <AvatarImage

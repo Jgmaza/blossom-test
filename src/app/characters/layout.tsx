@@ -89,11 +89,17 @@ const CharacterLayout = ({
     setStarredCharacters(starredCharacters);
   };
 
+  const [isLayoutVisible, setIsLayoutVisible] = useState(true);
+
   return (
     <main className="h-screen bg-white">
       <div className="flex flex-row h-full">
         {/* SideBar */}
-        <div className="flex flex-col px-[16px] w-[500px] h-full max:w-full">
+        <div
+          className={`flex flex-col px-[16px] w-[500px] h-full md-max:w-full
+          ${!isLayoutVisible ? "md-max:hidden" : "md-max:w-full"}
+          `}
+        >
           {/* Title and Search */}
           <div className="px-[8px] pt-8 mb-8">
             <h1
@@ -138,11 +144,12 @@ const CharacterLayout = ({
                     <CustomCard
                       key={character.id}
                       character={character}
-                      onClick={() =>
+                      onClick={() => {
                         router.push(
                           `/characters/${character.id}?isStarred=true`
-                        )
-                      }
+                        );
+                        setIsLayoutVisible(false);
+                      }}
                       selected={pathname === `/characters/${character.id}`}
                       starOnClick={(e: { stopPropagation: () => void }) => {
                         e.stopPropagation();
@@ -182,9 +189,10 @@ const CharacterLayout = ({
                       <CustomCard
                         key={character.id}
                         character={character}
-                        onClick={() =>
-                          router.push(`/characters/${character.id}`)
-                        }
+                        onClick={() => {
+                          router.push(`/characters/${character.id}`);
+                          setIsLayoutVisible(false);
+                        }}
                         selected={pathname === `/characters/${character.id}`}
                         starOnClick={(e: { stopPropagation: () => void }) => {
                           e.stopPropagation();
@@ -202,9 +210,19 @@ const CharacterLayout = ({
         </div>
         {/* Character details */}
         <div
-          className="w-full h-full overflow-auto"
+          className={`w-full h-full overflow-auto md-max:relative
+            ${!isLayoutVisible ? "md-max:w-full" : "md-max:hidden"}
+          `}
           style={{ boxShadow: "0px 4px 60px 0px rgba(0, 0, 0, 0.05)" }}
         >
+          <div className="absolute top-6 left-6 transition-transform transform hover:scale-110 cursor-pointer hidden md-max:block">
+            <i
+              className={`fa-solid fa-arrow-left text-xl text-purple-600`}
+              onClick={() => {
+                setIsLayoutVisible(true);
+              }}
+            ></i>
+          </div>
           {children}
         </div>
       </div>
